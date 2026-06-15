@@ -1,0 +1,44 @@
+Project name: TBD (something like CircularIQ or RegRadar)
+Hackathon: Band of Agents Hackathon — lablab.ai, June 12–19, 2026
+Track: Track 3 — Regulated / High-Stakes Workflows
+
+The Problem
+When RBI releases a new regulation circular, banks have no automated way to determine what it impacts. Compliance officers manually read through it and bounce between teams, systems, and documents to figure out what needs to change. This is slow, error-prone, and high-stakes.
+The Solution
+A multi-agent system where a compliance officer uploads an RBI circular and gets back a structured impact report — which banking applications, business processes, compliance controls, and engineering teams need to change, with priorities and deadlines.
+
+Agent Pipeline
+AgentResponsibilityIngestion AgentParses the RBI circular PDF, extracts key directives and deadlinesRegulation Mapping AgentMaps directives to banking functions (KYC, AML, payments etc.)Application Impact AgentIdentifies which internal systems are affectedProcess Impact AgentIdentifies which business processes need updatingCompliance Control AgentChecks which existing controls need revision or creationTeam Routing AgentAssigns action items to teams with priorities and deadlinesReport AgentSynthesizes everything into a structured impact brief
+Agents 2–6 run inside the Band coordination layer. Agents 1 and 7 are entry and exit points.
+
+Tech Stack
+LayerTechnologyAgent orchestrationBand (mandatory per hackathon rules)BackendPython + FastAPIFrontendReactVector storeChromaDBEmbedding modelall-MiniLM-L6-v2 via sentence-transformersPDF parsingTBD (PyMuPDF or pdfplumber)LLMTBD — likely Claude or GPT-4o via API
+
+Mock Data — 6 Chroma Collections
+CollectionWhat it containsRecordsbanking_functionsKYC, AML, payments, lending etc.~10applicationsCore banking, LOS, payment gateway etc.~10processesOnboarding, STR filing, loan disbursement etc.~10compliance_controlsCDD, EDD, data retention, audit trails etc.~10teamsCompliance, Risk, Technology, Legal etc.~10past_circularsHistorical RBI circulars with resolution actions~8
+Each record embedded as a concatenated string of its meaningful fields using all-MiniLM-L6-v2.
+
+Team Split
+YouTeammateIngestion AgentApplication Impact AgentRegulation Mapping AgentProcess Impact AgentBand orchestration layerCompliance Control AgentFastAPI setupTeam Routing Agent—Report Agent
+Both contributing to React frontend as needed.
+
+Immediate Action Items
+
+Read Band SDK docs and understand how agent-to-agent handoffs work
+Generate mock JSON data for all 6 collections
+Write the Chroma ingestion script to embed and load all collections
+Build and test the Ingestion Agent (PDF parsing → directive extraction)
+Build Regulation Mapping Agent and verify semantic search is working
+Build the 3 parallel agents (Application, Process, Compliance)
+Build Team Routing Agent and Report Agent
+Wire everything through Band
+Build React frontend — circular upload + real-time agent status + final report view
+Prepare demo with a real RBI circular PDF as input
+
+
+Open Decisions Still Needed
+
+Final project name
+Which LLM to use for agent reasoning (Claude API vs OpenAI)
+PDF parsing library (PyMuPDF vs pdfplumber)
+Whether past circulars collection is used actively by an agent or just as reference
