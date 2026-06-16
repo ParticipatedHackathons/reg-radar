@@ -2,6 +2,7 @@
 backend/.venv/
 __pycache__/
 *.pyc
+backend/chroma_storage
 
 # Node
 frontend/node_modules/
